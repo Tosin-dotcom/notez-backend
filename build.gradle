@@ -1,0 +1,117 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.4'
+	id 'io.spring.dependency-management' version '1.1.4'
+	id 'nu.studer.jooq' version '8.1'
+}
+
+group = 'com.tosin'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+}
+
+ext {
+	set('springAiVersion', "0.8.1")
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-jooq'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.liquibase:liquibase-core'
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+	implementation 'org.modelmapper:modelmapper:3.1.1'
+	implementation 'org.jooq:jooq-codegen:3.17.7'
+	implementation 'org.jibx:jibx-tools:1.4.2'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+//	implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'org.postgresql:postgresql'
+	annotationProcessor 'org.projectlombok:lombok'
+	jooqGenerator 'org.postgresql:postgresql'
+//	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+//	testImplementation 'org.springframework.security:spring-security-test'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.ai:spring-ai-bom:${springAiVersion}"
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+
+
+jooq {
+	// use jOOQ version defined in Spring Boot
+	version = dependencyManagement.importedProperties['jooq.version']
+
+
+	configurations {
+		main {
+			generateSchemaSourceOnCompilation = false
+			generationTool {
+				logging = org.jooq.meta.jaxb.Logging.WARN
+				jdbc {
+					driver = 'org.postgresql.Driver'
+					url = 'jdbc:postgresql://localhost:5432/notez'
+					user = 'postgres'
+					password = 'Iyiola123'
+					properties {
+						property {
+							key = 'PAGE_SIZE'
+							value = 2048
+						}
+					}
+				}
+				generator {
+					name = 'org.jooq.codegen.JavaGenerator'
+
+					database {
+						name = 'org.jooq.meta.postgres.PostgresDatabase'
+						inputSchema = 'public'
+						outputSchemaToDefault = true
+						excludes = 'DATABASECHANGELOG|DATABASECHANGELOGLOCK'
+					}
+					generate {
+						relations = false
+						deprecated = false
+						records = true
+						pojos = true
+						daos = true
+						springAnnotations = true
+						javaTimeTypes = true
+						fluentSetters = true
+						pojosEqualsAndHashCode = true
+						constructorPropertiesAnnotation = true
+						generatedAnnotation = true
+					}
+					target {
+						packageName = 'com.tosin.notez'
+						directory = 'src/main/java/com/tosin/notez/jooq'
+					}
+
+				}
+			}
+		}
+	}
+}

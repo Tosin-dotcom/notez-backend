@@ -9,15 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/demo")
 @RequiredArgsConstructor
 public class DemoController {
 
 
-    @GetMapping("demo")
+    @GetMapping("test")
     public ResponseEntity<String> demo() {
 
-        return new ResponseEntity<>("authorised endpoint", HttpStatus.OK);
+        return new ResponseEntity<>("Welcome to Notez", HttpStatus.OK);
     }
 
 

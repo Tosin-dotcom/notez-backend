@@ -200,4 +200,34 @@ public class UsersDao extends DAOImpl<UsersRecord, com.tosin.notez.tables.pojos.
     public List<com.tosin.notez.tables.pojos.Users> fetchByUpdatedAt(LocalDateTime... values) {
         return fetch(Users.USERS.UPDATED_AT, values);
     }
+
+    /**
+     * Fetch records that have <code>first_name BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<com.tosin.notez.tables.pojos.Users> fetchRangeOfFirstName(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Users.USERS.FIRST_NAME, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>first_name IN (values)</code>
+     */
+    public List<com.tosin.notez.tables.pojos.Users> fetchByFirstName(String... values) {
+        return fetch(Users.USERS.FIRST_NAME, values);
+    }
+
+    /**
+     * Fetch records that have <code>last_name BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<com.tosin.notez.tables.pojos.Users> fetchRangeOfLastName(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Users.USERS.LAST_NAME, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>last_name IN (values)</code>
+     */
+    public List<com.tosin.notez.tables.pojos.Users> fetchByLastName(String... values) {
+        return fetch(Users.USERS.LAST_NAME, values);
+    }
 }

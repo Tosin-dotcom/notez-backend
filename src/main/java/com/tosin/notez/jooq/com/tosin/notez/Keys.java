@@ -4,11 +4,16 @@
 package com.tosin.notez;
 
 
+import com.tosin.notez.tables.Categories;
+import com.tosin.notez.tables.Notes;
 import com.tosin.notez.tables.Users;
+import com.tosin.notez.tables.records.CategoriesRecord;
+import com.tosin.notez.tables.records.NotesRecord;
 import com.tosin.notez.tables.records.UsersRecord;
 
 import javax.annotation.processing.Generated;
 
+import org.jooq.ForeignKey;
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
@@ -33,7 +38,17 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final UniqueKey<CategoriesRecord> CATEGORIES_NAME_KEY = Internal.createUniqueKey(Categories.CATEGORIES, DSL.name("categories_name_key"), new TableField[] { Categories.CATEGORIES.NAME }, true);
+    public static final UniqueKey<CategoriesRecord> CATEGORIES_PKEY = Internal.createUniqueKey(Categories.CATEGORIES, DSL.name("categories_pkey"), new TableField[] { Categories.CATEGORIES.ID }, true);
+    public static final UniqueKey<NotesRecord> NOTES_PKEY = Internal.createUniqueKey(Notes.NOTES, DSL.name("notes_pkey"), new TableField[] { Notes.NOTES.ID }, true);
     public static final UniqueKey<UsersRecord> USERS_EMAIL_KEY = Internal.createUniqueKey(Users.USERS, DSL.name("users_email_key"), new TableField[] { Users.USERS.EMAIL }, true);
     public static final UniqueKey<UsersRecord> USERS_PKEY = Internal.createUniqueKey(Users.USERS, DSL.name("users_pkey"), new TableField[] { Users.USERS.ID }, true);
     public static final UniqueKey<UsersRecord> USERS_USERNAME_KEY = Internal.createUniqueKey(Users.USERS, DSL.name("users_username_key"), new TableField[] { Users.USERS.USERNAME }, true);
+
+    // -------------------------------------------------------------------------
+    // FOREIGN KEY definitions
+    // -------------------------------------------------------------------------
+
+    public static final ForeignKey<NotesRecord, CategoriesRecord> NOTES__NOTES_CATEGORY_ID_FKEY = Internal.createForeignKey(Notes.NOTES, DSL.name("notes_category_id_fkey"), new TableField[] { Notes.NOTES.CATEGORY_ID }, Keys.CATEGORIES_PKEY, new TableField[] { Categories.CATEGORIES.ID }, true);
+    public static final ForeignKey<NotesRecord, UsersRecord> NOTES__NOTES_USER_ID_FKEY = Internal.createForeignKey(Notes.NOTES, DSL.name("notes_user_id_fkey"), new TableField[] { Notes.NOTES.USER_ID }, Keys.USERS_PKEY, new TableField[] { Users.USERS.ID }, true);
 }

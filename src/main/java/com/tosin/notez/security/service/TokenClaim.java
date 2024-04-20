@@ -4,7 +4,8 @@ public enum TokenClaim {
 
 
     ID,
-    FULL_NAME,
+    FIRST_NAME,
+    LAST_NAME,
     EMAIL,
     USER_NAME,
     ROLE;

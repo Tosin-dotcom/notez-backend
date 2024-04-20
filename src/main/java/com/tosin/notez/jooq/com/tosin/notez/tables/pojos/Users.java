@@ -34,6 +34,8 @@ public class Users implements Serializable {
     private String password;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String firstName;
+    private String lastName;
 
     public Users() {}
 
@@ -45,9 +47,11 @@ public class Users implements Serializable {
         this.password = value.password;
         this.createdAt = value.createdAt;
         this.updatedAt = value.updatedAt;
+        this.firstName = value.firstName;
+        this.lastName = value.lastName;
     }
 
-    @ConstructorProperties({ "id", "username", "email", "role", "password", "createdAt", "updatedAt" })
+    @ConstructorProperties({ "id", "username", "email", "role", "password", "createdAt", "updatedAt", "firstName", "lastName" })
     public Users(
         UUID id,
         String username,
@@ -55,7 +59,9 @@ public class Users implements Serializable {
         String role,
         String password,
         LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        LocalDateTime updatedAt,
+        String firstName,
+        String lastName
     ) {
         this.id = id;
         this.username = username;
@@ -64,6 +70,8 @@ public class Users implements Serializable {
         this.password = password;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     /**
@@ -171,6 +179,36 @@ public class Users implements Serializable {
         return this;
     }
 
+    /**
+     * Getter for <code>users.first_name</code>.
+     */
+    public String getFirstName() {
+        return this.firstName;
+    }
+
+    /**
+     * Setter for <code>users.first_name</code>.
+     */
+    public Users setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    /**
+     * Getter for <code>users.last_name</code>.
+     */
+    public String getLastName() {
+        return this.lastName;
+    }
+
+    /**
+     * Setter for <code>users.last_name</code>.
+     */
+    public Users setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -222,6 +260,18 @@ public class Users implements Serializable {
         }
         else if (!this.updatedAt.equals(other.updatedAt))
             return false;
+        if (this.firstName == null) {
+            if (other.firstName != null)
+                return false;
+        }
+        else if (!this.firstName.equals(other.firstName))
+            return false;
+        if (this.lastName == null) {
+            if (other.lastName != null)
+                return false;
+        }
+        else if (!this.lastName.equals(other.lastName))
+            return false;
         return true;
     }
 
@@ -236,6 +286,8 @@ public class Users implements Serializable {
         result = prime * result + ((this.password == null) ? 0 : this.password.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
+        result = prime * result + ((this.firstName == null) ? 0 : this.firstName.hashCode());
+        result = prime * result + ((this.lastName == null) ? 0 : this.lastName.hashCode());
         return result;
     }
 
@@ -250,6 +302,8 @@ public class Users implements Serializable {
         sb.append(", ").append(password);
         sb.append(", ").append(createdAt);
         sb.append(", ").append(updatedAt);
+        sb.append(", ").append(firstName);
+        sb.append(", ").append(lastName);
 
         sb.append(")");
         return sb.toString();

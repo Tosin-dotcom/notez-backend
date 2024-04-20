@@ -4,6 +4,8 @@
 package com.tosin.notez;
 
 
+import com.tosin.notez.tables.Categories;
+import com.tosin.notez.tables.Notes;
 import com.tosin.notez.tables.Users;
 
 import javax.annotation.processing.Generated;
@@ -21,6 +23,16 @@ import javax.annotation.processing.Generated;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
+
+    /**
+     * The table <code>categories</code>.
+     */
+    public static final Categories CATEGORIES = Categories.CATEGORIES;
+
+    /**
+     * The table <code>notes</code>.
+     */
+    public static final Notes NOTES = Notes.NOTES;
 
     /**
      * The table <code>users</code>.

@@ -6,7 +6,7 @@ import org.jibx.schema.codegen.extend.NameConverter;
 import org.jooq.codegen.DefaultGeneratorStrategy;
 import org.jooq.meta.Definition;
 
-public class NamingStrategy extends DefaultGeneratorStrategy {
+public class CustomNamingStrategy extends DefaultGeneratorStrategy {
 
     private final NameConverter nameTools = new DefaultNameConverter();
 

@@ -37,9 +37,12 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
 	implementation 'org.modelmapper:modelmapper:3.1.1'
 	implementation 'org.jooq:jooq-codegen:3.17.7'
+	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.701'
+	implementation 'com.amazonaws:aws-java-sdk-core:1.12.701'
 	implementation 'org.jibx:jibx-tools:1.4.2'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+
 //	implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
@@ -85,7 +88,6 @@ jooq {
 				}
 				generator {
 					name = 'org.jooq.codegen.JavaGenerator'
-
 					database {
 						name = 'org.jooq.meta.postgres.PostgresDatabase'
 						inputSchema = 'public'

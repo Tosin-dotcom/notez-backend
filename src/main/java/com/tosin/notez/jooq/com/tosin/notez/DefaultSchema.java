@@ -4,6 +4,8 @@
 package com.tosin.notez;
 
 
+import com.tosin.notez.tables.Categories;
+import com.tosin.notez.tables.Notes;
 import com.tosin.notez.tables.Users;
 
 import java.util.Arrays;
@@ -37,6 +39,16 @@ public class DefaultSchema extends SchemaImpl {
     public static final DefaultSchema DEFAULT_SCHEMA = new DefaultSchema();
 
     /**
+     * The table <code>categories</code>.
+     */
+    public final Categories CATEGORIES = Categories.CATEGORIES;
+
+    /**
+     * The table <code>notes</code>.
+     */
+    public final Notes NOTES = Notes.NOTES;
+
+    /**
      * The table <code>users</code>.
      */
     public final Users USERS = Users.USERS;
@@ -57,6 +69,8 @@ public class DefaultSchema extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
+            Categories.CATEGORIES,
+            Notes.NOTES,
             Users.USERS
         );
     }

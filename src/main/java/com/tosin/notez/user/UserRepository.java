@@ -34,6 +34,8 @@ public class UserRepository {
         users.setRole(userDto.getRole().name());
         users.setPassword(userDto.getPassword());
         users.setUsername(userDto.getUsername());
+        users.setFirstName(userDto.getFirstName());
+        users.setLastName(userDto.getLastName());
         users.setCreatedAt(LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC));
         users.setUpdatedAt(LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC));
 

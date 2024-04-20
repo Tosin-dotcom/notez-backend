@@ -9,10 +9,7 @@ import com.tosin.notez.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -46,6 +43,13 @@ public class AuthenticationController {
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/map")
+    public ResponseEntity<String> demoController() {
+
+        return new ResponseEntity<>("working", HttpStatus.OK);
     }
 
 }

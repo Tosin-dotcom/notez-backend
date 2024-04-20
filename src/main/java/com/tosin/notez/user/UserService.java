@@ -1,6 +1,8 @@
 package com.tosin.notez.user;
 
 
+import com.tosin.notez.security.service.JwtService;
+import com.tosin.notez.security.service.TokenDetail;
 import com.tosin.notez.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +17,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public UserDto createNewUser(UserDto userDto) {
 
@@ -27,6 +30,16 @@ public class UserService {
         return userRepository.findUserByEmail(email);
     }
 
+    public UserDto getUserDetails() {
 
+        TokenDetail tokenDetail = jwtService.getUserDetails();
+        return UserDto.builder()
+                .id(tokenDetail.getId())
+                .email(tokenDetail.getEmail())
+                .firstName(tokenDetail.getFirstName())
+                .lastName(tokenDetail.getLastName())
+                .role(tokenDetail.getRole())
+                .build();
+    }
 
 }

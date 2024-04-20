@@ -3,4 +3,13 @@
 
   <include file="db/changelog/2024/202404/20240411120600_create_users_table.sql" relativeToChangelogFile="false"/>
 
+  <include file="db/changelog/2024/202404/20240415022700_add_first_name_last_name_to_user_table.sql" relativeToChangelogFile="false"/>
+
+  <include file="db/changelog/2024/202404/20240416142600_create_note_category_table.sql" relativeToChangelogFile="false"/>
+
+  <include file="db/changelog/2024/202404/20240416143900_create_note_table.sql" relativeToChangelogFile="false"/>
+
+  <include file="db/changelog/2024/202404/20240420122500_add_user_id_to_note_table.sql" relativeToChangelogFile="false"/>
+
+
 </databaseChangeLog>

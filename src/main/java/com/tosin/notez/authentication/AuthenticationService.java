@@ -40,6 +40,7 @@ public class AuthenticationService {
             throw new NotezException("Invalid login details", HttpStatus.NOT_FOUND);
         }
 
+        userDto.setPassword(null);
         return LoginResponse
                 .builder()
                 .user(userDto)

@@ -1,14 +1,14 @@
 package com.tosin.notez.user;
 
 
-import com.tosin.notez.exception.NotezException;
+import com.tosin.notez.Tables;
 import com.tosin.notez.tables.daos.UsersDao;
 import com.tosin.notez.tables.pojos.Users;
 import com.tosin.notez.user.dto.Role;
 import com.tosin.notez.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
+import org.jooq.DSLContext;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -24,6 +24,7 @@ public class UserRepository {
 
     private final UsersDao usersDao;
     private final ModelMapper modelMapper;
+    private final DSLContext dslContext;
 
 
     public UserDto save(UserDto userDto) {
@@ -50,7 +51,12 @@ public class UserRepository {
         Optional<Users> optionalUser = usersDao.fetchOptionalByEmail(email);
 
         return optionalUser.map(this::map);
+    }
 
+    public boolean userExists(String email) {
+
+        return dslContext.fetchExists(dslContext.selectFrom(Tables.USERS)
+                .where(Tables.USERS.EMAIL.eq(email)));
     }
 
 

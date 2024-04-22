@@ -11,6 +11,21 @@ on:
   push:
     branches: [ "main" ]
 
+env:
+  DB_URL: ${{ secrets.DB_URL }}
+  DB_USER: ${{ secrets.DB_USER }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  PORT : ${{ secrets.PORT }}
+  AWS_ACCESS_KEY : ${{ secrets.AWS_ACCESS_KEY }}
+  AWS_SECRET : ${{ secrets.AWS_SECRET }}
+  AWS_BUCKET_NAME : ${{ secrets.AWS_BUCKET_NAME }}
+  NOTEZ_SECRET_KEY : ${{ secrets.NOTEZ_SECRET_KEY }}
+  NOTEZ_ADMIN_EMAIL : ${{ secrets.NOTEZ_ADMIN_EMAIL }}
+  NOTEZ_ADMIN_PASSWORD : ${{ secrets.NOTEZ_ADMIN_PASSWORD }}
+  CDN_URL : ${{ secrets.CDN_URL }}
+
+
 jobs:
   build:
 
@@ -37,6 +52,12 @@ jobs:
 
     - name: Build with Gradle Wrapper
       run: ./gradlew build
+
+    - name: Kill process running on port ${{ env.PORT }}
+      run: sudo kill $(sudo lsof -t -i:${{ env.PORT }}) || true
+
+    - name: Run JAR file
+      run: java -jar /home/ec2-user/actions-runner/_work/notez-backend/notez-backend/build/libs/notez-0.0.1.jar &
 
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.

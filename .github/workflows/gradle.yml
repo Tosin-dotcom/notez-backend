@@ -24,6 +24,11 @@ env:
   NOTEZ_ADMIN_EMAIL : ${{ secrets.NOTEZ_ADMIN_EMAIL }}
   NOTEZ_ADMIN_PASSWORD : ${{ secrets.NOTEZ_ADMIN_PASSWORD }}
   CDN_URL : ${{ secrets.CDN_URL }}
+  JAR_PATH: "/home/ec2-user/actions-runner/_work/notez-backend/notez-backend/build/libs/notez-0.0.1.jar"
+  EC2_PUBLIC_IP: ${{ secrets.EC2_PUBLIC_IP }}
+  EC2_SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+  EC2_REMOTE_PATH: "/home/ec2-user/actions-runner/_work/notez-backend/notez-backend/build/libs"
+
 
 
 jobs:
@@ -58,6 +63,16 @@ jobs:
 
     - name: Run JAR file
       run: java -jar /home/ec2-user/actions-runner/_work/notez-backend/notez-backend/build/libs/notez-0.0.1.jar &
+
+    - name: Deploy to EC2 instance
+      uses: appleboy/ssh-action@master
+      with:
+          host: ${{ secrets.EC2_PUBLIC_IP }}
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script: |
+            scp $JAR_PATH ec2-user@${{ secrets.EC2_PUBLIC_IP }}:${{ secrets.EC2_REMOTE_PATH }}
+            ssh -o StrictHostKeyChecking=no -i ${{ secrets.EC2_SSH_PRIVATE_KEY }} ec2-user@${{ secrets.EC2_PUBLIC_IP }} "java -jar ${{ secrets.EC2_REMOTE_PATH }}/notez-0.0.1.jar &"
 
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.

@@ -59,7 +59,7 @@ jobs:
       run: ./gradlew build
 
     - name: Deploy to EC2
-      uses: easingthemes/ssh-deploy@v2
+      uses: appleboy/ssh-action@master
       with:
         server: ${{ secrets.EC2_HOST }}
         username: ec2-user

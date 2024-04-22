@@ -58,21 +58,20 @@ jobs:
     - name: Build with Gradle Wrapper
       run: ./gradlew build
 
-    - name: Kill process running on port ${{ env.PORT }}
-      run: sudo kill $(sudo lsof -t -i:${{ env.PORT }}) || true
-
-    - name: Run JAR file
-      run: java -jar /home/ec2-user/actions-runner/_work/notez-backend/notez-backend/build/libs/notez-0.0.1.jar &
-
-    - name: Deploy to EC2 instance
-      uses: appleboy/ssh-action@master
+    - name: Deploy to EC2
+      uses: easingthemes/ssh-deploy@v2
       with:
-          host: ${{ secrets.EC2_PUBLIC_IP }}
-          username: ec2-user
-          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-          script: |
-            scp $JAR_PATH ec2-user@${{ secrets.EC2_PUBLIC_IP }}:${{ secrets.EC2_REMOTE_PATH }}
-            ssh -o StrictHostKeyChecking=no -i ${{ secrets.EC2_SSH_PRIVATE_KEY }} ec2-user@${{ secrets.EC2_PUBLIC_IP }} "java -jar ${{ secrets.EC2_REMOTE_PATH }}/notez-0.0.1.jar &"
+        server: ${{ secrets.EC2_HOST }}
+        username: ec2-user
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          sudo systemctl stop notez || true
+          PID=$(sudo lsof -t -i:${PORT}) || true
+          if [ -n "$PID" ]; then
+            sudo kill -9 $PID || true
+          fi
+          sudo cp build/libs/notez-0.0.1.jar /home/ec2-user/
+          sudo nohup java -jar /home/ec2-user/notez-0.0.1.jar --server.port=${PORT} > /dev/null 2>&1 &
 
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.

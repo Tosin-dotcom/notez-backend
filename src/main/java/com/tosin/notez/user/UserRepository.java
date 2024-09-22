@@ -2,6 +2,7 @@ package com.tosin.notez.user;
 
 
 import com.tosin.notez.Tables;
+import com.tosin.notez.exception.NotezException;
 import com.tosin.notez.tables.daos.UsersDao;
 import com.tosin.notez.tables.pojos.Users;
 import com.tosin.notez.user.dto.Role;
@@ -9,6 +10,9 @@ import com.tosin.notez.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -40,17 +44,20 @@ public class UserRepository {
         users.setCreatedAt(LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC));
         users.setUpdatedAt(LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC));
 
-        usersDao.insert(users);
-        userDto.setPassword(null);
+        try {
+            usersDao.insert(users);
+        } catch (DuplicateKeyException duplicateKeyException) {
 
-        return userDto;
+            throw new NotezException("email/username already taken", HttpStatus.BAD_REQUEST);
+        }
+        return map(users, false);
     }
 
     public Optional<UserDto> findUserByEmail(String email) {
 
         Optional<Users> optionalUser = usersDao.fetchOptionalByEmail(email);
 
-        return optionalUser.map(this::map);
+        return optionalUser.map(users -> map(users, true));
     }
 
     public boolean userExists(String email) {
@@ -60,9 +67,12 @@ public class UserRepository {
     }
 
 
-    private UserDto map(Users user) {
+    private UserDto map(Users user, boolean withPassword) {
 
         UserDto map = modelMapper.map(user, UserDto.class);
+        if (!withPassword) {
+            map.setPassword(null);
+        }
         map.setRole(Role.valueOf(user.getRole()));
         return map;
     }

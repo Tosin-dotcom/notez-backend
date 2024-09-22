@@ -4,6 +4,7 @@ package com.tosin.notez.note.dto;
 import com.tosin.notez.category.dto.CategoryDto;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -18,5 +19,7 @@ public class NoteDto {
     private String textContent;
     private CategoryDto category;
     private UUID userId;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 }

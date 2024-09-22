@@ -1,5 +1,6 @@
 package com.tosin.notez.security.filter;
 
+import com.tosin.notez.exception.NotezException;
 import com.tosin.notez.security.Principal;
 import com.tosin.notez.security.service.JwtService;
 import com.tosin.notez.security.service.TokenDetail;
@@ -8,6 +9,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,16 +41,18 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         String jwtString = jwtService.extractJwtFromRequest();
 
         if (StringUtils.hasText(jwtString)) {
+            try {
+                TokenDetail tokenDetail = jwtService.extractTokenDetail(jwtString);
+                UserDetails userDetails = Principal.create(tokenDetail);
 
-            TokenDetail tokenDetail = jwtService.extractTokenDetail(jwtString);
-            UserDetails userDetails = Principal.create(tokenDetail);
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities());
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            } catch (NotezException notezException) {
+                logger.error("Authentication failed: ");
+            }
         } else {
 
             logger.info("Received request without Authorization Header");

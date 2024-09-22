@@ -32,12 +32,12 @@ public class AuthenticationService {
     public LoginResponse loginUser(LoginDto loginDto) {
 
         UserDto userDto = userService.getUserByEmail(loginDto.getEmail())
-                .orElseThrow(() -> new NotezException("Invalid login details", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NotezException("Invalid login details", HttpStatus.FORBIDDEN));
 
         boolean matches = passwordEncoder.matches(loginDto.getPassword(), userDto.getPassword());
 
         if (!matches) {
-            throw new NotezException("Invalid login details", HttpStatus.NOT_FOUND);
+            throw new NotezException("Invalid login details", HttpStatus.FORBIDDEN);
         }
 
         userDto.setPassword(null);

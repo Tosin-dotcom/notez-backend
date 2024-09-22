@@ -11,5 +11,7 @@
 
   <include file="db/changelog/2024/202404/20240420122500_add_user_id_to_note_table.sql" relativeToChangelogFile="false"/>
 
+  <include file="db/changelog/2024/202408/20240811211200_seed_category_table.sql" relativeToChangelogFile="false"/>
+
 
 </databaseChangeLog>

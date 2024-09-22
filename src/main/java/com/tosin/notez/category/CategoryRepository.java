@@ -55,4 +55,9 @@ public class CategoryRepository {
                 .stream().map(this::map).toList();
     }
 
+    public CategoryDto getCategoryById(UUID id) {
+
+        return map(categoriesDao.fetchOneById(id));
+    }
+
 }

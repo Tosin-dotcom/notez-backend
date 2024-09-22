@@ -5,10 +5,13 @@ import com.tosin.notez.model.PagedResponse;
 import com.tosin.notez.model.Request;
 import com.tosin.notez.model.Response;
 import com.tosin.notez.note.dto.NoteDto;
+import com.tosin.notez.note.dto.NoteSummaryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/note")
@@ -38,6 +41,48 @@ public class NoteController {
                 .status(true)
                 .build();
 
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Response<NoteDto>> getNoteById(@PathVariable UUID id) {
+
+        Response<NoteDto> response = Response.<NoteDto>builder()
+                .body(noteService.getNoteById(id))
+                .status(true)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+    @PutMapping
+    public ResponseEntity<Response<NoteDto>> updateNote(@RequestBody Request<NoteDto> request) {
+
+        Response<NoteDto> response = Response.<NoteDto>builder()
+                .body(noteService.updateNote(request.getBody()))
+                .status(true)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Response<String>> deleteNote(@PathVariable UUID id) {
+
+        noteService.deleteNote(id);
+        Response<String> response = Response.<String>builder()
+                .body("Note Deleted")
+                .status(true)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("summary")
+    public ResponseEntity<Response<NoteSummaryDto>> getNoteSummary() {
+
+        Response<NoteSummaryDto> response = Response.<NoteSummaryDto>builder()
+                .body(noteService.getNoteSummary())
+                .status(true)
+                .build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

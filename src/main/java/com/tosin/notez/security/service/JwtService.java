@@ -17,6 +17,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,11 +58,12 @@ public class JwtService {
 
     private String createToken(Map<String, Object> claims, String email) {
 
+
         return Jwts.builder()
                 .claims(claims)
                 .subject(email)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .expiration(Date.from(Instant.now().plus(40, ChronoUnit.HOURS)))
                 .signWith(getSignKey())
                 .compact();
     }
@@ -126,7 +129,7 @@ public class JwtService {
                             .getPayload();
         } catch (Exception exception) {
 
-            throw new NotezException("Invalid Token", HttpStatus.FORBIDDEN);
+            throw new NotezException("Invalid Token", HttpStatus.UNAUTHORIZED);
         }
     }
 

@@ -25,10 +25,10 @@ public class NoteService {
         return noteRepository.saveNote(noteDto);
     }
 
-    public PagedResponse<NoteDto> getAllNotes(int page, int size) {
+    public PagedResponse<NoteDto> getAllNotes(int page, int size, String searchValue) {
 
         UUID userId = userService.getUserDetails().getId();
-        return noteRepository.getAllNotes(userId, page, size);
+        return noteRepository.getAllNotes(userId, page, size, searchValue);
     }
 
     public NoteDto getNoteById(UUID id) {

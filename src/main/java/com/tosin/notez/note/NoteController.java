@@ -20,6 +20,7 @@ public class NoteController {
 
     private final NoteService noteService;
 
+
     @PostMapping
     public ResponseEntity<Response<NoteDto>> createNewNote(@RequestBody Request<NoteDto> request) {
 
@@ -33,9 +34,9 @@ public class NoteController {
 
     @GetMapping
     public ResponseEntity<Response<PagedResponse<NoteDto>>> getAllNotes(@RequestParam int page,
-            @RequestParam int size) {
+            @RequestParam int size, @RequestParam(required = false) String search) {
 
-        PagedResponse<NoteDto> notes = noteService.getAllNotes(page, size);
+        PagedResponse<NoteDto> notes = noteService.getAllNotes(page, size, search);
         Response<PagedResponse<NoteDto>> response = Response.<PagedResponse<NoteDto>>builder()
                 .body(notes)
                 .status(true)

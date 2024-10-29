@@ -5,7 +5,7 @@ on:
     branches:
       - main
     tags:
-      - 'v*.*.*' # For semantic versioning tags like v1.0.0
+      - 'v*.*.*'
 
 jobs:
   build-and-push:

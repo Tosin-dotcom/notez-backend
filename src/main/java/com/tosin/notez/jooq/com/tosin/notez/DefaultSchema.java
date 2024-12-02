@@ -5,6 +5,7 @@ package com.tosin.notez;
 
 
 import com.tosin.notez.tables.Categories;
+import com.tosin.notez.tables.Files;
 import com.tosin.notez.tables.Notes;
 import com.tosin.notez.tables.Users;
 
@@ -44,6 +45,11 @@ public class DefaultSchema extends SchemaImpl {
     public final Categories CATEGORIES = Categories.CATEGORIES;
 
     /**
+     * The table <code>files</code>.
+     */
+    public final Files FILES = Files.FILES;
+
+    /**
      * The table <code>notes</code>.
      */
     public final Notes NOTES = Notes.NOTES;
@@ -70,6 +76,7 @@ public class DefaultSchema extends SchemaImpl {
     public final List<Table<?>> getTables() {
         return Arrays.asList(
             Categories.CATEGORIES,
+            Files.FILES,
             Notes.NOTES,
             Users.USERS
         );

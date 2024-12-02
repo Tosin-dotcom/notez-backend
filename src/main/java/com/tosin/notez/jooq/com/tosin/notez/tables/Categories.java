@@ -75,7 +75,7 @@ public class Categories extends TableImpl<CategoriesRecord> {
     /**
      * The column <code>categories.image_url</code>.
      */
-    public final TableField<CategoriesRecord, String> IMAGE_URL = createField(DSL.name("image_url"), SQLDataType.VARCHAR(50).nullable(false), this, "");
+    public final TableField<CategoriesRecord, String> IMAGE_URL = createField(DSL.name("image_url"), SQLDataType.VARCHAR(50), this, "");
 
     /**
      * The column <code>categories.created_at</code>.

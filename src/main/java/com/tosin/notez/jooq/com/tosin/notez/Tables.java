@@ -5,6 +5,7 @@ package com.tosin.notez;
 
 
 import com.tosin.notez.tables.Categories;
+import com.tosin.notez.tables.Files;
 import com.tosin.notez.tables.Notes;
 import com.tosin.notez.tables.Users;
 
@@ -28,6 +29,11 @@ public class Tables {
      * The table <code>categories</code>.
      */
     public static final Categories CATEGORIES = Categories.CATEGORIES;
+
+    /**
+     * The table <code>files</code>.
+     */
+    public static final Files FILES = Files.FILES;
 
     /**
      * The table <code>notes</code>.

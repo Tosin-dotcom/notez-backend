@@ -2,6 +2,7 @@ package com.tosin.notez.file;
 
 
 import com.tosin.notez.file.dto.FileDto;
+import com.tosin.notez.file.dto.FileType;
 import com.tosin.notez.model.PagedResponse;
 import com.tosin.notez.model.Request;
 import com.tosin.notez.model.Response;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -20,11 +22,17 @@ public class FileController {
 
     private final FileService fileService;
 
-    @PostMapping
-    public ResponseEntity<Response<FileDto>> createNewFile(@RequestBody Request<FileDto> request) throws IOException {
+    @PostMapping(consumes = {"multipart/form-data"})
+    public ResponseEntity<Response<FileDto>> createNewFile(@RequestPart("file") MultipartFile file,
+            @RequestParam("title") String title, @RequestParam("type") String type) throws IOException {
 
+        FileDto fileDto = FileDto.builder()
+                .file(file)
+                .title(title)
+                .type(FileType.valueOf(type))
+                .build();
         Response<FileDto> response = Response.<FileDto>builder()
-                .body(fileService.createNewFile(request.getBody()))
+                .body(fileService.createNewFile(fileDto))
                 .status(true)
                 .build();
 

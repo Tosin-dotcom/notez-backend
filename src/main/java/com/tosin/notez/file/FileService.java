@@ -39,5 +39,12 @@ public class FileService {
         return fileRepository.getAllFiles(userId, page, size);
     }
 
+    public void deleteFile(UUID fileId) {
+
+        FileDto deletedFile = fileRepository.deleteFile(fileId);
+        storageService.deleteFile(deletedFile.getFilename());
+    }
+
+
 
 }

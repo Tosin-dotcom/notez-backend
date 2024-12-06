@@ -2,6 +2,7 @@ package com.tosin.notez.file;
 
 
 import com.tosin.notez.Tables;
+import com.tosin.notez.exception.NotezException;
 import com.tosin.notez.file.dto.FileDto;
 import com.tosin.notez.file.dto.FileType;
 import com.tosin.notez.model.PagedResponse;
@@ -12,6 +13,7 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -75,6 +77,14 @@ public class FileRepository {
                 .build();
     }
 
+    public FileDto deleteFile(UUID fileId) {
+
+        Files file = filesDao.fetchOptionalById(fileId)
+                .orElseThrow(() -> new NotezException("File does not exists", HttpStatus.BAD_REQUEST));
+        filesDao.delete(file);
+        return map(file);
+    }
+
 
     private FileDto map(Files file) {
 
@@ -83,6 +93,8 @@ public class FileRepository {
         map.setUrl(String.format("%s/%s", cdnUrl, file.getFilename()));
         return map;
     }
+
+
 
 
 }

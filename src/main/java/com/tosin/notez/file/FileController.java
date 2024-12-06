@@ -4,7 +4,6 @@ package com.tosin.notez.file;
 import com.tosin.notez.file.dto.FileDto;
 import com.tosin.notez.file.dto.FileType;
 import com.tosin.notez.model.PagedResponse;
-import com.tosin.notez.model.Request;
 import com.tosin.notez.model.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/file")
@@ -50,6 +50,17 @@ public class FileController {
                 .build();
         return new ResponseEntity<>(response, HttpStatus.OK);
 
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Response<String>> deleteFile(@PathVariable UUID id) {
+
+        fileService.deleteFile(id);
+        Response<String> response = Response.<String>builder()
+                .body("File Deleted")
+                .status(true)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 

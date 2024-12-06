@@ -37,4 +37,12 @@ public class StorageService {
         return fileName;
     }
 
+
+    public void deleteFile(String keyName) {
+
+        amazonS3.deleteObject(bucketName, keyName);
+    }
+
+
+
 }

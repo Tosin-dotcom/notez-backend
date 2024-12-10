@@ -52,3 +52,11 @@ jobs:
           docker tag "$IMAGE_URI:${{ env.VERSION }}" "$IMAGE_URI:latest"
           docker push "$IMAGE_URI:${{ env.VERSION }}"
           docker push "$IMAGE_URI:latest"
+
+      # Step 7: Update ECS service to use the latest image
+      - name: Update ECS Service
+        run: |
+          aws ecs update-service \
+            --cluster NotezBackendCluster \
+            --service NotezBackendService \
+            --force-new-deployment

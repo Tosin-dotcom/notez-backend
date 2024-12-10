@@ -49,7 +49,7 @@ public class AuthenticationController {
     @GetMapping("/map")
     public ResponseEntity<String> demoController() {
 
-        return new ResponseEntity<>("working", HttpStatus.OK);
+        return new ResponseEntity<>("Testing testing working", HttpStatus.OK);
     }
 
 }

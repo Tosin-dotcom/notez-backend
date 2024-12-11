@@ -21,6 +21,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.util.Arrays;
+
 
 @Configuration
 @EnableWebSecurity
@@ -67,7 +69,10 @@ public class SecurityConfig {
 
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:3000");
+        config.setAllowedOrigins(Arrays.asList(
+                "http://localhost:3000",
+                "http://notezfrontendalb-1192630601.eu-north-1.elb.amazonaws.com"
+        ));
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 

@@ -22,6 +22,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
+import java.util.List;
 
 
 @Configuration
@@ -69,9 +70,8 @@ public class SecurityConfig {
 
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList(
-                "http://localhost:3000",
-                "http://notezfrontendalb-1192630601.eu-north-1.elb.amazonaws.com"
+        config.setAllowedOrigins(List.of(
+                "https://notez.online"
         ));
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
